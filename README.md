@@ -1,12 +1,18 @@
 # Phase 4 Full-Stack Application
 ## User Stories
 
-As a User, I can:
-- Log in using login credentials
-- look through content for Croatian phrases, vocab words, watch videos
-- save certain vocab words for later views
-- self report if Croatian word is learned or not
-- filter back to unknown Croatian word for extra review
+Welcome to your one stop shop to learn the beautiful language of Croatia!
+
+We've built an app that will help you learn the basic foundations of the Croatian language through immersive vocabulary testing as well as some general/ basic grammar and syntax.
+
+As a user you will be able to:
+- log in using login credentials - the password be will be encrypted on the backend
+- browse and flip through vocab index cards on the main page
+- self report if the words were understood or not
+- filter back to the words that you were not able to remember so that you can get extra review
+- save vocab words for isolated practice later
+- there will at least 3 modules that will be implemented
+- the app will track the user's progression through the modules
 
 ## Table Setup
 
