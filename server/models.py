@@ -38,11 +38,12 @@ class Favorite(db.Model, SerializerMixin):
     __tablename__ = 'favorited_words'
 
     id = db.Column(db.Integer, primary_key=True)
+    # content = db.Column(db.String)
     module_content_id = db.Column(db.Integer, db.ForeignKey('module_contents.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
-        return f"<Favorite(id={self.id}, module_content_id={self.module_content_id}, user_id={self.user_id})>"
+        return f"<Favorite(id={self.id}, content={self.content} module_content_id={self.module_content_id}, user_id={self.user_id})>"
 
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
