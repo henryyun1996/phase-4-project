@@ -2,6 +2,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import validates
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
+# you might have to run "pip install Flask-Bcrypt"
+from flask_bcrypt import Bcrypt
 
 from config import db
 
@@ -38,7 +41,6 @@ class Favorite(db.Model, SerializerMixin):
     __tablename__ = 'favorited_words'
 
     id = db.Column(db.Integer, primary_key=True)
-    # content = db.Column(db.String)
     module_content_id = db.Column(db.Integer, db.ForeignKey('module_contents.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
@@ -49,8 +51,8 @@ class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String)
-    password = db.Column(db.String)
+    username = db.Column(db.String, unique=True)
+    _password_hash = db.Column(db.String, nullable=False)
     progress_percentage = db.Column(db.Integer)
 
     current_module_id = db.Column(db.Integer, db.ForeignKey('module_contents.id'))
@@ -59,4 +61,18 @@ class User(db.Model, SerializerMixin):
     modules = association_proxy('user_modules', 'module_content')
 
     def __repr__(self):
-        return f"<User(id={self.id}, username='{self.username}', password='{self.password}', progress_percentage={self.progress_percentage})>"
+        return f"<User(id={self.id}, username='{self.username}', password='{self._password_hash}', progress_percentage={self.progress_percentage})>"
+
+    @hybrid_property
+    def password_hash(self):
+        return self._password_hash
+
+    @password_hash.setter
+    def password_hash(self, password):
+        password_hash = bcrypt.generate_password_hash(
+            password.encode('utf-8'))
+        self._password_hash = password_hash.decode('utf-8')
+
+    def authenticate(self, password):
+        return bcrypt.check_password_hash(
+            self._password_hash, password.encode('utf-8'))
