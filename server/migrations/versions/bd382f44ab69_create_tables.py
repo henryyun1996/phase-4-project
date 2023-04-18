@@ -1,8 +1,8 @@
 """Create Tables
 
-Revision ID: 81183d6a1f2d
+Revision ID: bd382f44ab69
 Revises: 
-Create Date: 2023-04-18 10:50:11.147268
+Create Date: 2023-04-18 16:54:05.330441
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '81183d6a1f2d'
+revision = 'bd382f44ab69'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -28,11 +28,12 @@ def upgrade():
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(), nullable=True),
-    sa.Column('password', sa.String(), nullable=True),
+    sa.Column('_password_hash', sa.String(), nullable=False),
     sa.Column('progress_percentage', sa.Integer(), nullable=True),
     sa.Column('current_module_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['current_module_id'], ['module_contents.id'], name=op.f('fk_users_current_module_id_module_contents')),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('username')
     )
     op.create_table('vocab_words',
     sa.Column('id', sa.Integer(), nullable=False),
