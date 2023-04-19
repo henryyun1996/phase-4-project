@@ -18,7 +18,6 @@ class ModuleContent(db.Model, SerializerMixin):
 
     users = db.relationship('User', backref='module_content')
     vocab_words = db.relationship('Vocab', backref='module_content')
-    favorites = db.relationship('Favorite', backref='module_content')
 
     users = association_proxy('user_modules', 'user')
 
@@ -28,10 +27,13 @@ class ModuleContent(db.Model, SerializerMixin):
 class Vocab(db.Model, SerializerMixin):
     __tablename__ = 'vocab_words'
 
+    serialize_rules = ('-module_content_id',)
+
     id = db.Column(db.Integer, primary_key=True)
     english_word = db.Column(db.String)
     croatian_word = db.Column(db.String)
 
+    favorite_id = db.Column(db.Integer, db.ForeignKey('favorited_words.id'))
     module_content_id = db.Column(db.Integer, db.ForeignKey('module_contents.id'))
 
     def __repr__(self):
@@ -40,15 +42,27 @@ class Vocab(db.Model, SerializerMixin):
 class Favorite(db.Model, SerializerMixin):
     __tablename__ = 'favorited_words'
 
+
     id = db.Column(db.Integer, primary_key=True)
-    module_content_id = db.Column(db.Integer, db.ForeignKey('module_contents.id'))
+    vocab_id = db.Column(db.Integer, db.ForeignKey('vocab_words.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
+    @validates('vocab_id')
+    def check_favorites(self, key, vocab_id):
+        favorites = Favorite.query.all()
+        for favorite in favorites:
+            if vocab_id == favorite.vocab_id:
+                raise ValueError('Vocab word already favorited')
+            
+        return vocab_id
+
     def __repr__(self):
-        return f"<Favorite(id={self.id}, content={self.content} module_content_id={self.module_content_id}, user_id={self.user_id})>"
+        return f"<Favorite(id={self.id}, vocab_id={self.vocab_id}, user_id={self.user_id})>"
 
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
+
+    serialize_rules = ('-favorites',)
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True)
