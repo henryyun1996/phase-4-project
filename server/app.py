@@ -6,7 +6,7 @@ from flask_migrate import Migrate
 from flask_restful import Resource, Api
 
 from config import app, api, db
-from models import db, Vocab, ModuleContent, User, Bcrypt
+from models import db, Vocab, ModuleContent, User, Bcrypt, Favorite
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -85,15 +85,21 @@ class UserByID(Resource):
         return make_response({}, 200)
 
 # POST request so logged in User can add Vocab words into their Favorites list
-class Favorite(Resource):
-    def post(self, user_id, vocab_id):
+class Favorites(Resource):
+    def post(self, user_id):
+        data = request.get_json()
+
         user = User.query.get(user_id)
-        vocab = Vocab.query.get(vocab_id)
+        vocab = Vocab.query.get(data['vocab_id'])
         if not user or not vocab:
             return make_response({"error": "User or Vocab not found"}, 404)
-        user.favorites.append(vocab)
+       
+        new_favorite = Favorite(vocab_id=data['vocab_id'], user_id=user_id)
+        user.favorites.append(new_favorite)
+
+
         db.session.commit()
-        return make_response({"message": "Vocab added to favorites successfully"}, 200)
+        return make_response(new_favorite.to_dict(), 200)
     
 # DELETE request so logged in User can delete Vocab word/ words once they're done reviewing
     def delete(self, user_id, vocab_id):
@@ -114,7 +120,7 @@ api.add_resource(Vocabs, '/vocab')
 api.add_resource(VocabByID, '/vocab/<int:id>')
 api.add_resource(ModuleContents, '/module')
 api.add_resource(UserByID, '/user/<int:id>')
-api.add_resource(Favorite, '/user/<int:user_id>/vocab/<int:vocab_id>/favorite')
+api.add_resource(Favorites, '/user/<int:user_id>/favorites')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
