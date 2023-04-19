@@ -47,9 +47,10 @@ class Favorite(db.Model, SerializerMixin):
     vocab_id = db.Column(db.Integer, db.ForeignKey('vocab_words.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    @validates('vocab_id')
+    @validates('vocab_id','user_id')
     def check_favorites(self, key, vocab_id):
-        favorites = Favorite.query.all()
+        favorites = Favorite.query.filter_by(user_id=self.user_id).all()
+
         for favorite in favorites:
             if vocab_id == favorite.vocab_id:
                 raise ValueError('Vocab word already favorited')
