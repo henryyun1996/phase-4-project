@@ -5,6 +5,7 @@ import Home from './Home';
 import { useState, useEffect } from 'react';
 import CardContainer from './CardContainer'
 import Header from "./Header";
+import Signup from "./Signup";
 
 
 
@@ -80,7 +81,6 @@ function App() {
 
     }
 
-
   }
 
 
@@ -88,11 +88,17 @@ function App() {
     <div className='App ui'>
       <Switch>
         <Route exact path='/'>
-          <LogIn />
+          <LogIn 
+            setUser={setUser} 
+          />
+        </Route>
+        <Route exact path='/signup'>
+          <Signup 
+            setUser={setUser} 
+          />
         </Route>
         <Route exact path='/home'>
-          <Header username={username} />
-          <CardContainer vocabs={vocabs} handleFavoriteClick={handleFavoriteClick} userFavorites={userFavorites} />
+        <CardContainer vocabs={vocabs} />
         </Route>
       </Switch>
     </div>

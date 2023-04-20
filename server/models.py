@@ -6,7 +6,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 # you might have to run "pip install Flask-Bcrypt"
 from flask_bcrypt import Bcrypt
 
-from config import db
+from config import db, bcrypt
 
 class ModuleContent(db.Model, SerializerMixin):
     __tablename__ = 'module_contents'
@@ -65,9 +65,6 @@ class User(db.Model, SerializerMixin):
     favorites = db.relationship('Favorite', backref='user')
     modules = association_proxy('user_modules', 'module_content')
 
-    def __repr__(self):
-        return f"<User(id={self.id}, username='{self.username}', password='{self._password_hash}', progress_percentage={self.progress_percentage})>"
-
     @hybrid_property
     def password_hash(self):
         return self._password_hash
@@ -81,3 +78,6 @@ class User(db.Model, SerializerMixin):
     def authenticate(self, password):
         return bcrypt.check_password_hash(
             self._password_hash, password.encode('utf-8'))
+
+    def __repr__(self):
+        return f"<User(id={self.id}, username='{self.username}', password='{self._password_hash}', progress_percentage={self.progress_percentage})>"
