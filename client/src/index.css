@@ -9,6 +9,27 @@ body {
     text-align: center;
   }
 
+  .ui.card:hover {
+    transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  }
+
+  #banner {
+    margin-top: 5px;
+    padding-left: 10px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    color: white;
+    background-color: cadetblue;
+    border-radius: 10px;
+    opacity: 60%;
+  }
+
+  h1 {
+    color: chocolate;
+    text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff,
+                 1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff;
+  }
+
   h2 {
     color: chocolate
   }

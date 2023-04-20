@@ -2,21 +2,29 @@ import React, { useEffect, useState } from "react"
 import Card from './Card'
 
 
-function CardContainer({ vocabs, setCurrentUser }) {
+function CardContainer({ vocabs, handleFavoriteClick, userFavorites }) {
 
-    const vocabList = vocabs.map((vocab, index) => {
+    const vocabList = vocabs.map((vocab) => {
+        
+        const favorited_vocab = userFavorites.filter(favorite => (favorite.vocab_id === vocab.id))
+        
+        let isFavorited = false
+
+        if (favorited_vocab !== undefined && favorited_vocab.length > 0) {
+            isFavorited = true;
+        }
+
 
         return (
-            <div class="column">
-               <Card key={index} vocab={vocab} isFavorited={false} />
+            <div key={vocab.id} className="column">
+               <Card key={vocab.id} vocab={vocab} handleFavoriteClick={handleFavoriteClick} isFavorited={isFavorited} />
             </div>)
 
     })
 
 
 
-    return (
-        <div className="ui grid container">
+    return (<div className="ui grid container">
             <div className="ui stackable three column grid">
                 {vocabList}
             </div>

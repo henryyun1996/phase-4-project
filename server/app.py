@@ -88,18 +88,22 @@ class Favorites(Resource):
         db.session.commit()
         return make_response(new_favorite.to_dict(), 200)
     
-# DELETE request so logged in User can delete Vocab word/ words once they're done reviewing
-    def delete(self, user_id, vocab_id):
-        user = User.query.get(user_id)
-        vocab = Vocab.query.get(vocab_id)
-        if not user or not vocab:
-            return make_response({"error": "User or Vocab not found"}, 404)
-        if vocab in user.favorites:
-            user.favorites.remove(vocab)
-            db.session.commit()
-            return make_response({"message": "Vocab removed from favorites successfully"}, 200)
-        else:
-            return make_response({"error": "Vocab not in favorites"}, 404)
+
+
+class FavoriteById(Resource):
+
+    # DELETE request so logged in User can delete Vocab word/ words once they're done reviewing
+    def delete(self, id):
+
+        favorite = Favorite.query.filter_by(id=id).first()
+
+        if not favorite:
+            return make_response({"error": "Favorite not found"}, 404)
+        
+        db.session.delete(favorite)
+        db.session.commit()
+
+        return make_response({"message": "Favorite removed successfully"}, 200)
 
 class Signup(Resource):
 
@@ -164,6 +168,7 @@ api.add_resource(VocabByID, '/vocab/<int:id>')
 api.add_resource(ModuleContents, '/module')
 api.add_resource(UserByID, '/user/<int:id>')
 api.add_resource(Favorites, '/user/<int:user_id>/favorites')
+api.add_resource(FavoriteById, '/favorites/<int:id>')
 api.add_resource(Signup, '/signup')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(Login, '/login')

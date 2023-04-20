@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useHistory } from "react-router-dom";
 
-const Login = ({ setCurrentUser }) => {
+const Login = ({ setUser }) => {
     const history = useHistory();
   
     const formSchema = yup.object({
@@ -29,7 +29,7 @@ const Login = ({ setCurrentUser }) => {
           .then(res => {
             if (res.ok) {
               res.json().then(user => {
-                setCurrentUser(user);
+                setUser(user);
                 history.push('/home');
               });
             } else {

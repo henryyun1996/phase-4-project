@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useHistory } from "react-router-dom";
 
-const Signup = ({ setCurrentUser }) => {
+const Signup = ({ setUser }) => {
     const history = useHistory();
 
     const formSchema = yup.object().shape({
@@ -39,7 +39,7 @@ const Signup = ({ setCurrentUser }) => {
                     body: JSON.stringify(values)
                 }).then(res => {
                     if (res.ok) {
-                        res.json().then( new_user => setCurrentUser(new_user))
+                        res.json().then( new_user => setUser(new_user))
                         console.log("User successfully created!")
                         history.push('/home')
                     } else {
