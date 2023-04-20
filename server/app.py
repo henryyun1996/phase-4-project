@@ -1,23 +1,10 @@
 #!/usr/bin/env python3
-import os
-
-from flask import Flask, jsonify, make_response, request
+from flask import Flask, jsonify, make_response, request, session
 from flask_migrate import Migrate
 from flask_restful import Resource, Api
 
-from config import app, api, db
-from models import db, Vocab, ModuleContent, User, Bcrypt, Favorite
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.json.compact = False
-
-migrate = Migrate(app, db)
-bcrypt = Bcrypt(app)
-db.init_app(app)
-
-api = Api(app)
+from config import *
+from models import Vocab, ModuleContent, User, Favorite
 
 # welcome page to our API!
 class Home(Resource):
@@ -114,6 +101,62 @@ class Favorites(Resource):
         else:
             return make_response({"error": "Vocab not in favorites"}, 404)
 
+class Signup(Resource):
+
+    def post(self):
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+
+        new_user = User(
+            username=username
+        )
+
+        new_user.password_hash = password
+
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            session['user_id'] = new_user.id
+            return make_response(new_user.to_dict(), 201)
+
+        except Exception as e:
+            print(e)
+            return make_response({'error': 'Unprocessable Entity'}, 417)
+
+class CheckSession(Resource):
+
+    def get(self):
+        user_id = session.get('user_id')
+        
+        if not user_id:
+            return {'error': 'Unauthorized'}, 401
+        
+        current_user = User.query.filter(User.id == user_id).first()
+        return current_user.to_dict(), 200
+
+class Login(Resource):
+    
+    def post(self):
+        data = request.get_json()
+
+        check_user = User.query.filter(User.username == data['username']).first()
+        
+        if check_user and check_user.authenticate(data['password']):
+            session['user_id'] = check_user.id
+            return make_response(check_user.to_dict(), 200)
+        return {'error': 'Unauthorized'}, 401
+
+
+class Logout(Resource):
+
+    def delete(self):
+        
+        if session.get('user_id'):
+            session['user_id'] = None
+            return {}, 204
+        return {'error': '401 Unauthorized'}, 401
+
 
 api.add_resource(Home, '/')
 api.add_resource(Vocabs, '/vocab')
@@ -121,6 +164,10 @@ api.add_resource(VocabByID, '/vocab/<int:id>')
 api.add_resource(ModuleContents, '/module')
 api.add_resource(UserByID, '/user/<int:id>')
 api.add_resource(Favorites, '/user/<int:user_id>/favorites')
+api.add_resource(Signup, '/signup')
+api.add_resource(CheckSession, '/check_session')
+api.add_resource(Login, '/login')
+api.add_resource(Logout, '/logout')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

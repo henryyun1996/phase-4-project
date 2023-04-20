@@ -8,6 +8,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "@types/jquery": "^3.5.16",
+    "formik": "^2.2.9",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.8.0",
@@ -19,7 +20,8 @@
     "semantic-ui-react": "^2.1.4",
     "semantic-ui-transition": "^2.5.0",
     "styled-components": "^5.3.0",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "yup": "^1.1.1"
   },
   "scripts": {
     "start": "PORT=4000 react-scripts start",

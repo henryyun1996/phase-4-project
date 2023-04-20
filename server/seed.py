@@ -26,11 +26,11 @@ if __name__ == '__main__':
         users = [gail, henry]
 
         print("Populating module_contents")
-        module_content1 = ModuleContent(video_url = "https://www.youtube.com/watch?v=bBPFUWQfjLM", content = "test", lesson_level = 1)
-        module_content2 = ModuleContent(video_url = "https://www.youtube.com/watch?v=pF58Ngo-_5Y", content = "test", lesson_level = 2)
-        # module_content3 = ModuleContent(video_url = )
+        module_content1 = ModuleContent(video_url = "https://www.youtube.com/watch?v=bBPFUWQfjLM", content = "Hello! Welcome to the first module in your journey to learning Croatian. In this module we will be going over some basic greetings and phrases. As you go through these modules, please first watch the video before moving onto to the vocabulary words. This will help prepare you to have the correct pronounciation of each word. Refer back to the video anytime when so that you can practice pronounciation as there are words with special accent marks that are not present in English. Remember you can save any vocab word from any module so that you can refer to them later! Happy learning and Sretno Ti!", lesson_level = 1)
+        module_content2 = ModuleContent(video_url = "https://www.youtube.com/watch?v=pF58Ngo-_5Y", content = "Dobra dan! Welcome to the second module in your journey to learning Croatian. In this module, we will adding some complexity by showing you some phrases so that you can start stitching words together. To emphasis again, pronounciation of words is as important as learning the mearning of each word. So please refer to the video first before moving onto the vocabulary portion of the module. You're doing great and I'm excited to hear about your progress in the next module! Super ti ide!", lesson_level = 2)
+        module_content3 = ModuleContent(video_url = "https://www.youtube.com/watch?v=zOShUAfhHIA", content = "Dobrodošli u posljednji modul! Welcome to the last module! In this final module, we will be going over more phrases - specifically greetings so that you can get around when visiting the dream destinationi Rovinj. Please again refer to the video before continuing onto the vocabulary words! Uči i uči dobro!", lesson_level = 3)
 
-        modules = [module_content1, module_content2]
+        modules = [module_content1, module_content2, module_content3]
 
         print("Populating vocab_words")
         word1 = Vocab(english_word = "Thank you", croatian_word = "Hvala")
@@ -44,7 +44,7 @@ if __name__ == '__main__':
         word9 = Vocab(english_word = "Bird", croatian_word = "Ptica")
         word10 = Vocab(english_word = "House", croatian_word = "Kuća")
         word11 = Vocab(english_word = "Car", croatian_word = "Auto")
-        word12 = Vocab(english_word = "Kava", croatian_word = "Coffee")
+        word12 = Vocab(english_word = "Coffee", croatian_word = "Kava")
         word13 = Vocab(english_word = "Beer", croatian_word = "Pivo")
         word14 = Vocab(english_word = "Water", croatian_word = "Voda")
         word15 = Vocab(english_word = "Church", croatian_word = "Crkva")

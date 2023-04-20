@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import Card from './Card'
 
 
-function CardContainer({ vocabs }) {
+function CardContainer({ vocabs, setCurrentUser }) {
 
     const vocabList = vocabs.map((vocab, index) => {
 
