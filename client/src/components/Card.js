@@ -4,17 +4,27 @@ import transition from "semantic-ui-transition";
 
 
 
-function Card({ vocab, isFavorited, handleFavoriteClick }) {
+function Card({ vocab, handleFavoriteClick, isFavorited }) {
     const [favorite, setFavorite] = useState(isFavorited)
+
+    useEffect(() => {
+        setFavorite(isFavorited)
+    }, [isFavorited])
+
+    
     const [isClicked, setIsClicked] = useState(false)
 
     $.fn.transition = transition
 
-    const { croatian_word, id, english_word, module_content, module_content_id } = vocab;
+    const { croatian_word, id, english_word, module_content_id } = vocab;
 
 
     const togglefav = () => {
+
         setFavorite(!favorite)
+
+        handleFavoriteClick(id, favorite);
+
     }
 
     function handleFlip(event) {
@@ -38,12 +48,14 @@ function Card({ vocab, isFavorited, handleFavoriteClick }) {
 
     }
 
+    
+
 
 
     return (
         <div id={id} className="ui card">
             <div className="content">
-                <div className="description"  onClick={(event) => handleFlip(event)}>
+                <div className="description" onClick={(event) => handleFlip(event)}>
                     {isClicked ? <h3>{croatian_word}</h3> : <h3>{english_word}</h3>}
                 </div>
                 <div className="extra content">
