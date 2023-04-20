@@ -1,8 +1,8 @@
 """Create Tables
 
-Revision ID: bd382f44ab69
+Revision ID: 5ccc47b00122
 Revises: 
-Create Date: 2023-04-18 16:54:05.330441
+Create Date: 2023-04-20 09:45:05.152477
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'bd382f44ab69'
+revision = '5ccc47b00122'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -45,10 +45,10 @@ def upgrade():
     )
     op.create_table('favorited_words',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('module_content_id', sa.Integer(), nullable=True),
+    sa.Column('vocab_id', sa.Integer(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['module_content_id'], ['module_contents.id'], name=op.f('fk_favorited_words_module_content_id_module_contents')),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('fk_favorited_words_user_id_users')),
+    sa.ForeignKeyConstraint(['vocab_id'], ['vocab_words.id'], name=op.f('fk_favorited_words_vocab_id_vocab_words')),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
