@@ -65,6 +65,18 @@ class User(db.Model, SerializerMixin):
     favorites = db.relationship('Favorite', backref='user')
     modules = association_proxy('user_modules', 'module_content')
 
+    @validates('username')
+    def validate_username(self, key, username):
+        if not isinstance(username, str):
+            raise ValueError("Username must be a string")
+        return username
+    
+    @validates('_password_hash')
+    def validate_password_len(self, key, _password_hash):
+        if len(_password_hash) < 5:
+            raise ValueError("Password must be at least 5 characters")
+        return _password_hash
+
     @hybrid_property
     def password_hash(self):
         return self._password_hash
