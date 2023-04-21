@@ -27,7 +27,7 @@ class ModuleContent(db.Model, SerializerMixin):
 class Vocab(db.Model, SerializerMixin):
     __tablename__ = 'vocab_words'
 
-    serialize_rules = ('-module_content_id',)
+    serialize_rules = ('-module_content',)
 
     id = db.Column(db.Integer, primary_key=True)
     english_word = db.Column(db.String)

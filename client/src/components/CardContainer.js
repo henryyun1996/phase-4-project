@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react"
 import Card from './Card'
 
 
-function CardContainer({ vocabs, handleFavoriteClick, userFavorites }) {
+function CardContainer({ vocabs, handleFavoriteClick, user }) {
 
     const vocabList = vocabs.map((vocab) => {
         
-        const favorited_vocab = userFavorites.filter(favorite => (favorite.vocab_id === vocab.id))
+        const favorited_vocab = user?.favorites.filter(favorite => (favorite.vocab_id === vocab.id))
         
         let isFavorited = false
 

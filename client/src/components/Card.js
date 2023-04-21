@@ -6,6 +6,7 @@ import transition from "semantic-ui-transition";
 
 function Card({ vocab, handleFavoriteClick, isFavorited }) {
     const [favorite, setFavorite] = useState(isFavorited)
+    
 
     useEffect(() => {
         setFavorite(isFavorited)
@@ -30,7 +31,7 @@ function Card({ vocab, handleFavoriteClick, isFavorited }) {
     function handleFlip(event) {
         let card = event.target.closest('.ui.card')
         console.log($(`#${card.id}`))
-        let text = event.target.closest('h3')
+        let text = event.target.closest('.word')
         console.log(text)
 
         text.style.color = '#FFFFFF'
@@ -56,7 +57,7 @@ function Card({ vocab, handleFavoriteClick, isFavorited }) {
         <div id={id} className="ui card">
             <div className="content">
                 <div className="description" onClick={(event) => handleFlip(event)}>
-                    {isClicked ? <h3>{croatian_word}</h3> : <h3>{english_word}</h3>}
+                    {isClicked ? <h3 className="word">{croatian_word}</h3> : <h3 className="word">{english_word}</h3>}
                 </div>
                 <div className="extra content">
                     <span className="right floated heart icon" onClick={togglefav}>

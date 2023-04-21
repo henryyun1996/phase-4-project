@@ -9,6 +9,43 @@ body {
     text-align: center;
   }
 
+  #text {
+    text-align: right;
+  }
+
+  #module {
+    margin-top: 20px;
+    padding-bottom: 50px;
+    padding-left: 30px;
+    padding-right: 30px;
+
+  }
+
+  iframe {
+    border-radius: 10px;
+  }
+
+  #module_description {
+    padding-left: 10px;
+    text-align: left;
+    padding: 20px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px rgba(188, 188, 188, 0.2);
+  }
+
+  #thumbnail:hover {
+    transform: scale(1.05)
+
+
+  }
+
+  #item-div {
+    display: flex;
+    align-items: top;
+  }
+
+
   .ui.card:hover {
     transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
   }
@@ -34,8 +71,21 @@ body {
     color: chocolate
   }
 
+  #thumbnail {
+    padding-top: 12px;
+  }
+
   #heart:hover {
     color: chocolate
+  }
+
+  #header{
+    padding-top: 20px;
+  }
+
+  #progressbar{
+    scale: 0.75;
+
   }
   
   #header p {
@@ -48,6 +98,35 @@ body {
 
   body {
     background-color: antiquewhite;
+  }
+
+  .form {
+    padding-top: 20px;
+    text-align: left;
+  }
+
+  label {
+    padding-left: 5px;
+  }
+
+  #login {
+   text-align: center;
+  }
+
+  #signup {
+    padding-top: 20px;
+  }
+
+  #editprofile {
+    padding-top: 20px;
+  }
+
+  #module-number {
+    padding-bottom: 10px;
+  }
+
+  #module-number a:hover {
+    color: cadetblue
   }
 
 
