@@ -140,7 +140,7 @@ function App() {
   return (
     <div className='App ui'>
       <Header />
-      {user !== undefined && <NavBar  path={path} progressPercentage={user?.progress_percentage} username={user?.username} handleLogout={handleLogout} />}
+      {user !== undefined && path !== '/' && <NavBar  path={path} progressPercentage={user?.progress_percentage} username={user?.username} handleLogout={handleLogout} />}
       <Switch>
         <Route exact path='/'>
           <LogIn
