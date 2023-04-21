@@ -57,7 +57,7 @@ const Signup = ({ setUser }) => {
 
   return (
     <div>
-        <h1>Sign up Form</h1>
+        <h1 id="signup">Sign Up</h1>
         <Form onSubmit={formik.handleSubmit} style={{ margin: "30px" }}>
             <Form.Field validate>
                 <label>Username</label>

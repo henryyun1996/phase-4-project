@@ -52,7 +52,14 @@ class UserByID(Resource):
             return make_response({"error": "User not found"}, 404)
         new_username = request.json.get('username')
         new_password = request.json.get('_password_hash')
+        current_module_id = request.json.get('current_module_id')
+        progress_percentage = request.json.get('progress_percentage')
 
+        if progress_percentage:
+            user.progress_percentage = progress_percentage
+
+        if current_module_id:
+            user.current_module_id = current_module_id
 
         if new_username:
             user.username = new_username

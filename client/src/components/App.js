@@ -1,42 +1,51 @@
 import React from "react";
-import { Switch, Route, redirect, useNavigate } from "react-router-dom";
+import { Switch, Route, redirect, useNavigate, useHistory } from "react-router-dom";
 import LogIn from './LogIn';
 import Home from './Home';
 import { useState, useEffect } from 'react';
 import CardContainer from './CardContainer'
 import Header from "./Header";
 import Signup from "./Signup";
+import Modules from "./Modules";
+import NavBar from "./NavBar";
+import EditProfile from "./EditProfile";
 
 
 
 function App() {
   const [vocabs, setVocabs] = useState([]);
   const [user, setUser] = useState();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [signUpClicked, setSignUpClicked] = useState(false);
-  const [userFavorites, setUserFavorites] = useState([]);
-  const [username, setUsername] = useState('');
+  const [modules, setModules] = useState([]);
 
-
-  //const navigate = useNavigate();
+  const history = useHistory();
 
   useEffect(() => {
     fetch("/vocab")
       .then((resp) => resp.json())
       .then((vocabsArray) => {
         setVocabs(vocabsArray);
-        //console.log('vocabs', vocabs)
 
       })
-    fetch('/user/1')
-      .then(resp => resp.json())
-      .then(gail => {
-        setUser(gail)
-        setUsername(gail.username)
-        setUserFavorites(gail.favorites)
+    fetch("/module")
+      .then((resp) => resp.json())
+      .then((moduleArray) => {
+        setModules(moduleArray);
+
       })
 
   }, [])
+
+  useEffect(() => {
+    fetch("/check_session")
+      .then((r) => {
+        if (r.ok) {
+          r.json().then((user) => setUser(user));
+        }
+      });
+  }, []);
+
+
+
 
   function handleFavoriteClick(vocab_id, favorite) {
     if (!favorite) {
@@ -56,7 +65,8 @@ function App() {
       fetch(`/user/${user.id}`)
         .then((resp) => resp.json())
         .then((userObj) => {
-          setUserFavorites(userObj.favorites)
+          setUser(userObj)
+          console.log(userObj)
         })
 
     } else {
@@ -69,7 +79,7 @@ function App() {
             const favorite_to_delete = userObj.favorites.filter(favorite_i => favorite_i.vocab_id === vocab_id)[0]
             console.log('test', favorite_to_delete)
 
-            if (favorite_to_delete !== null) {
+            if (favorite_to_delete !== undefined) {
               fetch(`/favorites/${favorite_to_delete.id}`, {
                 method: "DELETE",
               });
@@ -83,22 +93,75 @@ function App() {
 
   }
 
+  const handleLogout = () => {
+    fetch("/logout", { method: "DELETE" })
+      .then((r) => {
+        if (r.ok) {
+          setUser(undefined)
+        }
+        history.push('/home')
+      })
+  }
+
+  function handleModuleClick(module) {
+    let progress;
+    if (module.lesson_level === 1) {
+      progress = 33
+    } else if (module.lesson_level === 2) {
+      progress = 50
+    } else if (module.lesson_level === 3) {
+      progress = 100
+    }
+
+    console.log(typeof(progress))
+
+    fetch(`/user/${user.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        current_module_id: module.id,
+        progress_percentage: progress
+      }),
+    })
+    .then(resp => resp.json())
+    .then(userObj => {
+      setUser(userObj)
+    })
+
+  }
 
   return (
     <div className='App ui'>
+      <Header />
+      {user !== undefined && <NavBar  progressPercentage={user?.progress_percentage} username={user?.username} handleLogout={handleLogout} />}
       <Switch>
         <Route exact path='/'>
-          <LogIn 
-            setUser={setUser} 
+          <LogIn
+            setUser={setUser}
           />
         </Route>
         <Route exact path='/signup'>
-          <Signup 
-            setUser={setUser} 
+          <Signup
+            setUser={setUser}
           />
         </Route>
         <Route exact path='/home'>
-        <CardContainer vocabs={vocabs} />
+          <Modules moduleContent={modules} handleModuleClick={handleModuleClick} />
+        </Route>
+        <Route exact path='/cards/1'>
+          <CardContainer vocabs={vocabs.filter(vocab => (vocab.module_content_id === 1))} handleFavoriteClick={handleFavoriteClick} user={user} />
+        </Route>
+        <Route exact path='/cards/2'>
+          <CardContainer vocabs={vocabs.filter(vocab => (vocab.module_content_id === 2))} handleFavoriteClick={handleFavoriteClick} user={user} />
+        </Route>
+        <Route exact path='/cards/3'>
+          <CardContainer vocabs={vocabs.filter(vocab => (vocab.module_content_id === 3))} handleFavoriteClick={handleFavoriteClick} user={user} />
+        </Route>
+
+        <Route>
+          <EditProfile username={user?.username} user={user} setUser={setUser} />
         </Route>
       </Switch>
     </div>
