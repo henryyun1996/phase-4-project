@@ -75,6 +75,7 @@ class UserByID(Resource):
         user = User.query.filter_by(id=id).first()
         if not user:
             return make_response({"error": "User not found"}, 404)
+        Favorite.query.filter_by(user_id=user.id).delete()
         db.session.delete(user)
         db.session.commit()
         return make_response({}, 200)
@@ -112,6 +113,7 @@ class FavoriteById(Resource):
         db.session.commit()
 
         return make_response({"message": "Favorite removed successfully"}, 200)
+
 
 class Signup(Resource):
 
