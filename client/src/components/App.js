@@ -161,7 +161,7 @@ function App() {
         </Route>
 
         <Route>
-          <EditProfile username={user?.username} user={user} setUser={setUser} />
+          <EditProfile user={user} setUser={setUser} />
         </Route>
       </Switch>
     </div>
