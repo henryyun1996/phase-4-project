@@ -68,7 +68,7 @@ const Signup = ({ setUser }) => {
                     value={formik.values.username}
                     onChange={formik.handleChange}
                 />
-                <p style={{ color: "purple" }}> {formik.errors.username}</p>
+                <p style={{ color: "#FF0000" }}> {formik.errors.username}</p>
 
             </Form.Field>
             <Form.Field validate>
@@ -81,7 +81,7 @@ const Signup = ({ setUser }) => {
                     value={formik.values.password}
                     onChange={formik.handleChange}
                 />
-                <p style={{ color: "purple" }}> {formik.errors.password}</p>
+                <p style={{ color: "#FF0000" }}> {formik.errors.password}</p>
             </Form.Field>
             <Form.Field validate>
                 <label>Confirm Password</label>
@@ -93,7 +93,7 @@ const Signup = ({ setUser }) => {
                     onChange={formik.handleChange}
                     value={formik.values.confirm_password}
                 />
-                <p style={{ color: "purple" }}> { formik.errors.confirm_password }</p>
+                <p style={{ color: "#FF0000" }}> { formik.errors.confirm_password }</p>
             </Form.Field>
             <Button
               className='ui button' 

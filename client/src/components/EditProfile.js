@@ -40,6 +40,27 @@ const EditProfile = ({ user, setUser }) => {
       })
       .then((data) => {
         setUser(data);
+        setUser(undefined)
+        history.push('/');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleDelete = () => {
+    fetch(`/user/${user.id}`, {
+      method: 'DELETE',
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error('Network response was not ok');
+      })
+      .then(() => {
+        window.alert('User deleted successfully! Hope to see you soon again!');
+        setUser(undefined);
         history.push('/');
       })
       .catch((error) => {
@@ -95,6 +116,11 @@ const EditProfile = ({ user, setUser }) => {
           </Grid.Column>
         </Grid>
       </Segment>
+      <div style={{ textAlign: 'right' }}>
+        <Button className='ui button' onClick={handleDelete}>
+          Delete your Profile
+        </Button>
+      </div>
     </div>
   );
 };

@@ -3,7 +3,8 @@ import transition from "semantic-ui-transition";
 import $ from 'jquery';
 import progress from 'semantic-ui-progress'
 
-const NavBar = ({ progressPercentage, username, handleLogout }) => {
+
+const NavBar = ({ path, progressPercentage, username, handleLogout }) => {
 
   useEffect(() => {
     $.fn.transition = transition
@@ -19,10 +20,12 @@ const NavBar = ({ progressPercentage, username, handleLogout }) => {
 
 
   return (
-    <div><h5 className="item right floated" id="text"> Dobrodošli, {username} </h5>
+    <div>
+      <h5 className="item right floated" id="text"> Dobrodošli, {username} </h5>
+      {path !== '/edit-profile' &&
       <div className="ui teal progress" data-percent={progressPercentage} id="example1">
         <div className="bar"></div>
-      </div>
+      </div>}
       <div className="ui menu">
         <a className="item" href="/home">Home</a>
         <a className='item' href='/edit-profile'>Edit Your Profile</a>

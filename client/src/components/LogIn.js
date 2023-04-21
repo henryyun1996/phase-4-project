@@ -62,7 +62,7 @@ const Login = ({ setUser, setUserFavorites }) => {
                   value={formik.values.username}
                   onChange={formik.handleChange}
                 />
-                <p style={{ color: "red" }}> {formik.errors.username}</p>
+                <p style={{ color: "#FF0000" }}> {formik.errors.username}</p>
               </Form.Field>
               <br />
               <Form.Field>
@@ -74,7 +74,7 @@ const Login = ({ setUser, setUserFavorites }) => {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                 />
-                <p style={{ color: "red" }}> {formik.errors.password}</p>
+                <p style={{ color: "#FF0000" }}> {formik.errors.password}</p>
               </Form.Field>
               <br />
               <Button

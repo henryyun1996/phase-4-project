@@ -9,6 +9,7 @@ import Signup from "./Signup";
 import Modules from "./Modules";
 import NavBar from "./NavBar";
 import EditProfile from "./EditProfile";
+import { useLocation } from 'react-router-dom'
 
 
 
@@ -18,6 +19,10 @@ function App() {
   const [modules, setModules] = useState([]);
 
   const history = useHistory();
+
+  let location = useLocation();
+  let path = location.pathname
+  
 
   useEffect(() => {
     fetch("/vocab")
@@ -135,7 +140,7 @@ function App() {
   return (
     <div className='App ui'>
       <Header />
-      {user !== undefined && <NavBar  progressPercentage={user?.progress_percentage} username={user?.username} handleLogout={handleLogout} />}
+      {user !== undefined && <NavBar  path={path} progressPercentage={user?.progress_percentage} username={user?.username} handleLogout={handleLogout} />}
       <Switch>
         <Route exact path='/'>
           <LogIn
