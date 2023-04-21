@@ -79,7 +79,7 @@ function App() {
             const favorite_to_delete = userObj.favorites.filter(favorite_i => favorite_i.vocab_id === vocab_id)[0]
             console.log('test', favorite_to_delete)
 
-            if (favorite_to_delete !== null) {
+            if (favorite_to_delete !== undefined) {
               fetch(`/favorites/${favorite_to_delete.id}`, {
                 method: "DELETE",
               });
@@ -97,7 +97,7 @@ function App() {
     fetch("/logout", { method: "DELETE" })
       .then((r) => {
         if (r.ok) {
-          setUser(null)
+          setUser(undefined)
         }
         history.push('/home')
       })
@@ -135,7 +135,7 @@ function App() {
   return (
     <div className='App ui'>
       <Header />
-      {user && <NavBar  progressPercentage={user?.progress_percentage} username={user?.username} handleLogout={handleLogout} />}
+      {user !== undefined && <NavBar  progressPercentage={user?.progress_percentage} username={user?.username} handleLogout={handleLogout} />}
       <Switch>
         <Route exact path='/'>
           <LogIn
