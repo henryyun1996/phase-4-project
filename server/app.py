@@ -63,8 +63,9 @@ class UserByID(Resource):
 
         if new_username:
             user.username = new_username
+
         if new_password:
-            user._password_hash = new_password
+            user.password_hash = new_password
 
         db.session.commit()
         return make_response(user.to_dict(), 200)

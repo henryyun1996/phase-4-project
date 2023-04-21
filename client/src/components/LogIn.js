@@ -35,7 +35,7 @@ const Login = ({ setUser, setUserFavorites }) => {
               history.push('/home');
             });
           } else {
-            alert('Oops, username and password don\'t match');
+            alert('Username and Password don\'t match! Please try again.');
           }
         })
         .catch(error => {
